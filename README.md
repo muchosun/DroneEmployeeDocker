@@ -22,4 +22,4 @@ docker-compose up
 ```
 3. Wait sync parity. (3-4 h)
 4. Go to http://127.0.0.1:9000 and create new account for portainer.
-5. Go to http://127.0.0.1:9000 for watch simualtion of flight.
+5. Go to http://127.0.0.1:8888 for watch simualtion of flight.
