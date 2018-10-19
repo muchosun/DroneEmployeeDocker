@@ -1,0 +1,73 @@
+version: '2.2'
+services:
+  portainer:
+    image: portainer/portainer:latest
+    networks:
+      - droneemployeenet
+    ports:
+      - "9000:9000"
+    command: ["-H", "unix:///var/run/docker.sock", "--logo", "http://slate.iot-lab.gq/images/logo.png"]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+  simserver:
+    image: simlabs/simserver:latest
+    networks:
+      - droneemployeenet
+    init: true
+    ports:
+      - "8888:8888"
+      - "1234:1234"
+    expose:
+      - "3344"
+  parity:
+     image: parity/parity:v1.11.11
+     networks:
+      - droneemployeenet
+     init: true
+     ports:
+       - "8546:8546"
+       - "8180:8180"
+       - "30303:30303"
+     expose:
+       - "8545"
+       - "8546"
+     command: ["--unsafe-expose", "--db-path", "/chain-data/", "-d", "/keys-store/" ,"--jsonrpc-interface", "all", "--jsonrpc-hosts", "all", "--ws-interface", "all", "--ws-origins", "all", "--fast-unlock" ,"--mode", "active", "--tracing", "off", "--pruning", "fast", "--db-compaction", "ssd", "--cache-size", "1024"]
+     volumes:
+       - parity-db:/chain-data
+       - parity-keystore:/keys-store
+  ipfs:
+    image: ipfs/go-ipfs:latest
+    networks:
+      droneemployeenet:
+        ipv4_address: 172.16.238.100
+    init: true
+    command: ["--enable-pubsub-experiment"]
+  robonomics:
+    init: true
+    networks:
+      - droneemployeenet
+    image: simlabs/robonomics-ros:latest
+    extra_hosts:
+      - "gateway:172.16.238.1"
+    depends_on:
+      - "ipfs"
+      - "parity"
+    environment:
+      PYTHONUNBUFFERED: 1
+      LIGHTHOUSE_CONTRACT: "mobilerobotics.lighthouse.1.robonomics.eth"
+      SIMLABS_BACKEND_ADDR: "simserver:3344"
+      IPFS_API_ADDR: "http://172.16.238.100:5001" # if use local ipfs service insert "http://172.16.238.1:5001" and comment ipfs service
+      WEB3_API_ADDR: "http://parity:8545" # if use local parity service insert "http://gateway:8545" and comment parity service
+networks:
+  droneemployeenet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.238.0/24
+        gateway: 172.16.238.1
+volumes:
+  portainer_data:
+  parity-db:
+  parity-keystore:
