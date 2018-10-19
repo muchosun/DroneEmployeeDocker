@@ -5,7 +5,7 @@
 install 
 
 * docker
-* docker-compouse
+* docker-compose
 
 ## Install steps
 
