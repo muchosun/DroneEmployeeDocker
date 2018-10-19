@@ -33,6 +33,7 @@ docker exec -it droneemployeedocker_parity_1 bash
 ```
 
 6. Go to http://127.0.0.1:8888 for watch simualtion of flight.
+7. For exit use `CTRL` + `C`
 
 # Note
 
