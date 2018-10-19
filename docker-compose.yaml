@@ -57,7 +57,7 @@ services:
       PYTHONUNBUFFERED: 1
       LIGHTHOUSE_CONTRACT: "mobilerobotics.lighthouse.1.robonomics.eth"
       SIMLABS_BACKEND_ADDR: "simserver:3344"
-      IPFS_API_ADDR: "http://172.16.238.100:5001" # if use local ipfs service insert "http://172.16.238.1:5001" and comment ipfs service
+      IPFS_API_ADDR: "http://172.16.238.100:5001" # USE ONLY IP ADDRESS!!! if use local ipfs service insert "http://172.16.238.1:5001" and comment ipfs service
       WEB3_API_ADDR: "http://parity:8545" # if use local parity service insert "http://gateway:8545" and comment parity service
 networks:
   droneemployeenet:
