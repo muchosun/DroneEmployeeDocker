@@ -29,7 +29,7 @@ docker exec -it droneemployeedocker_parity_1 bash
 
 ###in docker droneemployeedocker_parity_1
 
-./parity/parity account new
+/parity/parity account new
 ```
 
 6. Go to http://127.0.0.1:8888 for watch simualtion of flight.
